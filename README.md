@@ -16,7 +16,7 @@ Creating the infra
 
 Setting the environment Variables
 
-set the following variables in the file
+set the following variables in the file deploy/env.sh
 ```
 export AWS_PROFILE="xxx"
 export TF_VAR_key_pair_name="xxx"
