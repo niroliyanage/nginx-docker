@@ -5,6 +5,7 @@ install
 pip install boto3
 pip install boto
 pip install ansible
+brew install jq ( a JQ parser )
 
 terraform
 
@@ -12,6 +13,16 @@ https://learn.hashicorp.com/terraform/getting-started/install.html
 
 
 Creating the infra
+
+Setting the environment Variables
+
+set the following variables in the file
+```
+export AWS_PROFILE="xxx"
+export TF_VAR_key_pair_name="xxx"
+export TF_VAR_access_key="xxx"
+export TF_VAR_secret_key="xxx"
+```
 
  ```
  cd deploy
@@ -50,3 +61,17 @@ ansible-playbook -i hosts parser.yml -e public_ip="<public_ip>"
 ```
 
 the output will be displayed in the console
+
+Outcomes
+
+- Terraform will create infrastructure and deploy the nginx container
+
+- The Container logs will be logged in cloudwatch in its own stream based on the container ID
+- The ansible parser will do the content manipulations
+
+Reasons for solution selection
+ - Terraform as opposed to ansible for docker. This was done so that terraform can maintain a state of the containers that were deployed. ideally the state locking, idempotancy mechanisms can be leveraged
+
+ - TLS for docker. This would mean I would have to either pass on the private_key in the repo. or dynamically get the TLS provider in terraform to generate the Certs and download it. I deemed for this to  be beyond scope
+
+ - Using the default Subnet.. Ideally I would get terraform to deploy its own VPC or accept this as an input var.

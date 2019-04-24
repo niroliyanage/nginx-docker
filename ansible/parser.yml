@@ -1,0 +1,35 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  # vars:
+  #  public_ip: 13.236.184.236
+
+  tasks:
+    - name: get ouput
+      uri:
+       url: "http://{{ public_ip }}"
+       return_content: yes
+       method: GET
+       status_code: 200
+       body_format: json
+      register: bla
+
+    - name: stripe tags and word count
+      shell: echo "{{ bla.content }}" | sed -e 's/<[^>]*>//g'
+      register: wordcount
+
+    - set_fact:
+        nginx_out: "{{ wordcount.stdout | replace('\n', '') }}"
+
+    - set_fact:
+        out_list: "{{ nginx_out.split() }}"
+
+    - name: word count
+      debug:
+        msg: "There are {{ out_list | length }} words "
+
+    - name: sorting
+      debug:
+        msg: "{{ out_list | sort }} "
