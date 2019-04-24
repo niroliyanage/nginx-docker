@@ -2,11 +2,8 @@
 
 ###  install
 
-pip install boto3
-pip install boto
-pip install ansible
+pip install boto3 boto ansible
 brew install jq ( a JQ parser )
-
 terraform
 
 https://learn.hashicorp.com/terraform/getting-started/install.html
